@@ -34,6 +34,8 @@ public class User implements UserDetails {
 
     private String profileImage;
 
+    private String publicImageId;
+
     private String country;
 
     private Date dateOfBirth;
@@ -58,8 +60,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
-//        authorityList.add(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
-        authorityList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        authorityList.add(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
 
         return authorityList;
     }
@@ -76,5 +77,9 @@ public class User implements UserDetails {
         else if(username != null && !username.isEmpty())
             return username;
         return "";
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 }

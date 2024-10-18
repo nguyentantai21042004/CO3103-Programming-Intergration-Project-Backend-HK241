@@ -19,8 +19,26 @@ ADD CONSTRAINT fk_role_id
 FOREIGN KEY (role_id) REFERENCES roles(id)
 ON DELETE SET NULL; -- Nếu role bị xóa, role_id sẽ bị đặt về NULL
 
+ALTER TABLE users
+ADD COLUMN public_image_id VARCHAR(255);
+
 -- Bảng Role
 CREATE TABLE roles (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,      -- ID của vai trò
     name VARCHAR(50) NOT NULL UNIQUE           -- Tên của vai trò (ví dụ: ROLE_ADMIN, ROLE_USER)
 );
+
+CREATE TABLE tokens (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(255),
+    refresh_token VARCHAR(255),
+    token_type VARCHAR(50),
+    expiration_date DATETIME,
+    refresh_expiration_date DATETIME,
+    is_mobile TINYINT(1),
+    revoked BOOLEAN DEFAULT false,
+    expired BOOLEAN DEFAULT false,
+    user_id BIGINT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+

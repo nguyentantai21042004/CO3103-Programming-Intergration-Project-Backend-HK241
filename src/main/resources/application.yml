@@ -1,6 +1,9 @@
 server:
   port: 8088
 
+api:
+  prefix: /api/v1
+
 spring:
   datasource:
     url: jdbc:mysql://music-web-hk241-tai21042004.i.aivencloud.com:23837/music_web_db?ssl-mode=REQUIRED
@@ -16,8 +19,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-api:
-  prefix: /api/v1
+cloudinary:
+  cloud_name: dq76uikpj
+  api_key: 252687583593391
+  api_secret: bBRpdVI_fvwi2-qchZek5_uGfeM
 
 jwt:
   expiration: 2592000 # 30 days = 30 * 24 * 60 * 60
