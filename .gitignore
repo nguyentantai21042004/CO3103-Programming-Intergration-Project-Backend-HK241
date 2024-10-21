@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### Local-config ###
+src/main/resources/sensitive-config.yml
+document1.yaml

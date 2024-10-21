@@ -19,6 +19,21 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
+  # Email sender (cần phải tự tạo 1 file chứa username và password)
+  config:
+    import: "optional:classpath:sensitive-config.yml"
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
+
 cloudinary:
   cloud_name: dq76uikpj
   api_key: 252687583593391
@@ -28,3 +43,7 @@ jwt:
   expiration: 2592000 # 30 days = 30 * 24 * 60 * 60
   expiration-refresh-token: 5184000 # 60 days = 60 * 24 * 60 * 60
   secretKey: TaqlmGv1iEDMRiFp/pHuID1+T84IABfuA0xXh4GhiUI=
+
+
+
+
