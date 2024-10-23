@@ -42,3 +42,17 @@ CREATE TABLE tokens (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+# -- Bảng songs
+# CREATE TABLE songs (
+#    id CHAR(36) PRIMARY KEY,
+#    songName VARCHAR(255) NOT NULL,
+#    songArtist VARCHAR(255) NOT NULL
+# );
+#
+# -- Bảng genre
+# CREATE TABLE genre (
+#    genreId CHAR(36)  PRIMARY KEY,
+#    name VARCHAR(100) NOT NULL
+# );
+
+

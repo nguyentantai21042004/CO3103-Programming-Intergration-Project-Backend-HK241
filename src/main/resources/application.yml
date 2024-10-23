@@ -13,7 +13,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none  # Không tự động tạo/tạo lại bảng, phù hợp khi bạn đã tạo bảng từ Workbench
+      ddl-auto: update  # Không tự động tạo/tạo lại bảng, phù hợp khi bạn đã tạo bảng từ Workbench (de update de test, sau khi hoan tat toan bo schema moi nen de none)
     show-sql: true
     properties:
       hibernate:

@@ -3,6 +3,7 @@ package L03.CNPM.Music.controllers;
 import L03.CNPM.Music.DTOS.ResetPasswordDTO;
 import L03.CNPM.Music.DTOS.UserDTO;
 import L03.CNPM.Music.DTOS.UserLoginDTO;
+import L03.CNPM.Music.DTOS.UploadSongDTO;
 import L03.CNPM.Music.components.LocalizationUtils;
 import L03.CNPM.Music.components.SecurityUtils;
 import L03.CNPM.Music.models.Token;
@@ -12,6 +13,7 @@ import L03.CNPM.Music.responses.users.LoginResponse;
 import L03.CNPM.Music.responses.users.UserListResponse;
 import L03.CNPM.Music.responses.users.UserResponse;
 import L03.CNPM.Music.services.email.EmailService;
+import L03.CNPM.Music.services.song.SongService;
 import L03.CNPM.Music.services.token.ITokenService;
 import L03.CNPM.Music.services.users.IUserService;
 import L03.CNPM.Music.utils.MessageKeys;
@@ -46,6 +48,7 @@ public class UserController {
     private final IUserService userService;
     private final ITokenService tokenService;
     private final EmailService emailService;
+    private final SongService songService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
@@ -195,7 +198,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_LISTENER') or hasRole('ROLE_ARTIST') or hasRole('ROLE_ADMIN')")
-    @PostMapping("/details")
+    @GetMapping("/details")
     public ResponseEntity<ResponseObject> getUserDetails(
             @RequestHeader("Authorization") String authorizationHeader
     ) throws Exception {
@@ -252,6 +255,17 @@ public class UserController {
     }
 
     private boolean isMobileDevice(String userAgent) { return userAgent.toLowerCase().contains("mobile"); }
+
+    @PreAuthorize("hasRole('ROLE_LISTENER') or hasRole('ROLE_ARTIST')")
+    @PostMapping("/upload")
+    public ResponseEntity<ResponseObject> uploadMusic(@RequestBody UploadSongDTO upload) {
+        String message = "upload song successfully";
+        return ResponseEntity.ok().body(ResponseObject.builder()
+                .message(message)
+                .status(HttpStatus.OK)
+                .data(songService.uploadSong(upload))
+                .build());
+    }
 
     public static boolean isImageFile(MultipartFile file) {
         return true;
