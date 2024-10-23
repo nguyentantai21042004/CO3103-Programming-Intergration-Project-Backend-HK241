@@ -11,7 +11,6 @@ import L03.CNPM.Music.responses.ResponseObject;
 import L03.CNPM.Music.responses.users.LoginResponse;
 import L03.CNPM.Music.responses.users.UserListResponse;
 import L03.CNPM.Music.responses.users.UserResponse;
-import L03.CNPM.Music.services.email.EmailService;
 import L03.CNPM.Music.services.token.ITokenService;
 import L03.CNPM.Music.services.users.IUserService;
 import L03.CNPM.Music.utils.MessageKeys;
@@ -45,7 +44,6 @@ public class UserController {
     private final SecurityUtils securityUtils;
     private final IUserService userService;
     private final ITokenService tokenService;
-    private final EmailService emailService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
@@ -120,7 +118,6 @@ public class UserController {
         }
 
         User newUser = userService.createUser(userDTO);
-        emailService.sendMail(newUser.getEmail(),"Your account create successfully", "Your account create successfully");
         return ResponseEntity.ok(ResponseObject.builder()
                 .status(HttpStatus.CREATED)
                 .data(UserResponse.fromUser(newUser))
