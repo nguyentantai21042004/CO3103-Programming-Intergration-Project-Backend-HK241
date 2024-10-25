@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
@@ -27,18 +30,30 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(requests -> {
-                    requests
-                            .requestMatchers(
-                                    String.format("%s/users/register", apiPrefix),
-                                    String.format("%s/users/login", apiPrefix)
-                            )
-                            .permitAll()
-                            .anyRequest()
-                            .authenticated(); // Quan trọng: Các request khác phải được xác thực
-                });
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // Updated CORS config
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers(String.format("%s/users/register", apiPrefix),
+                                        String.format("%s/users/login", apiPrefix),
+                                        String.format("%s/roles", apiPrefix))
+                                .permitAll()  // Public access to register and login endpoints
+                                .anyRequest().authenticated()  // All other requests must be authenticated
+                )
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);  // JWT filter
+
         return httpSecurity.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:4200");  // Allow requests from Angular app
+        configuration.addAllowedMethod("*");  // Allow all HTTP methods (GET, POST, etc.)
+        configuration.addAllowedHeader("*");  // Allow all headers
+        configuration.setAllowCredentials(true);  // Allow credentials like cookies
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);  // Apply CORS to all endpoints
+        return source;
     }
 }

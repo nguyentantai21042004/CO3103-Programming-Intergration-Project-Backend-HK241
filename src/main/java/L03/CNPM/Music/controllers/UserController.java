@@ -47,7 +47,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("")
-    public ResponseEntity<ResponseObject> getAllUser(
+        public ResponseEntity<ResponseObject> getAllUser(
             @RequestParam(defaultValue = "", required = false) String keyword,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit
@@ -209,7 +209,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_LISTENER') or hasRole('ROLE_ARTIST')")
-    @PutMapping("/details/{userId}")
+    @PutMapping("/reset-password/{userId}")
     public ResponseEntity<ResponseObject> resetPassword(
             @PathVariable Long userId,
             @RequestBody ResetPasswordDTO resetPasswordDTO,
